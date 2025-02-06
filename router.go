@@ -7,7 +7,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/kaitoyama/kaitoyama-server-template/internal/infrastructure/db"
-	handler "github.com/kaitoyama/kaitoyama-server-template/internal/interface"
+	"github.com/kaitoyama/kaitoyama-server-template/internal/interface/handler"
 	"github.com/kaitoyama/kaitoyama-server-template/openapi"
 	"github.com/labstack/echo/v4"
 )
