@@ -13,7 +13,7 @@ type Config struct {
 
 func LoadConfig() *Config {
 	return &Config{
-		DBHost:     getEnv("NS_MARIADB_HOST", "localhost"),
+		DBHost:     getEnv("NS_MARIADB_HOSTNAME", "localhost"),
 		DBPort:     getEnv("NS_MARIADB_PORT", "3306"),
 		DBUser:     getEnv("NS_MARIADB_USER", "user"),
 		DBPassword: getEnv("NS_MARIADB_PASSWORD", "password"),
