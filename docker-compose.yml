@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      NS_MARIADB_HOST: mariadb
+      NS_MARIADB_HOSTNAME: mariadb
       NS_MARIADB_PORT: 3306
       NS_MARIADB_USER: user
       NS_MARIADB_PASSWORD: password

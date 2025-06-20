@@ -40,7 +40,7 @@ wait-db:
 	done
 
 # Initialize development environment
-init: db-up wait-db migrate generate-sqlc generate-oapi
+init: db-up wait-db migrate generate-sqlc oapi
 
 # Stop and remove all containers
 clean-docker:
