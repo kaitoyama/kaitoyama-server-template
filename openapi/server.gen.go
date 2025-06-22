@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	. "github.com/kaitoyama/kaitoyama-server-template/openapi/models"
+	// . "github.com/kaitoyama/kaitoyama-server-template/openapi/models"
 	"github.com/labstack/echo/v4"
 )
 

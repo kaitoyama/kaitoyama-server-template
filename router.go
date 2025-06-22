@@ -2,11 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"embed"
-	"io/fs"
-	"net/http"
 	"os"
-	"path/filepath"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/kaitoyama/kaitoyama-server-template/internal/infrastructure/db"
@@ -16,9 +12,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog/log"
 )
-
-//go:embed static/*
-var staticFiles embed.FS
 
 //go:embed openapi/swagger.yml
 var swaggerFile []byte
@@ -31,9 +24,6 @@ func SetupRouter(database *sql.DB) *echo.Echo {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
-
-	// Setup static file serving
-	setupStaticFileServing(e)
 
 	// Load OpenAPI spec (use embedded file for buildpack compatibility)
 	var swaggerBytes []byte
@@ -61,7 +51,7 @@ func SetupRouter(database *sql.DB) *echo.Echo {
 
 	// Setup API routes
 	api := e.Group("/api")
-	
+
 	dbChecker := db.NewDBHealthChecker(database)
 	healthHandler := handler.NewHandler(dbChecker)
 
@@ -69,23 +59,4 @@ func SetupRouter(database *sql.DB) *echo.Echo {
 	openapi.RegisterHandlersWithBaseURL(api, healthHandler, "")
 
 	return e
-}
-
-// setupStaticFileServing configures static file serving for both development and production
-func setupStaticFileServing(e *echo.Echo) {
-	// Check if we're running with embedded files (production/buildpack)
-	if staticFS, err := fs.Sub(staticFiles, "static"); err == nil {
-		// Use embedded files
-		e.GET("/static/*", echo.WrapHandler(http.FileServer(http.FS(staticFS))))
-		log.Info().Msg("Using embedded static files")
-	} else {
-		// Development mode - serve from local filesystem
-		staticPath := "static"
-		if _, err := os.Stat(staticPath); err == nil {
-			e.Static("/static", staticPath)
-			log.Info().Msg("Using local static files from ./static")
-		} else {
-			log.Warn().Msg("Static directory not found, static file serving disabled")
-		}
-	}
 }
